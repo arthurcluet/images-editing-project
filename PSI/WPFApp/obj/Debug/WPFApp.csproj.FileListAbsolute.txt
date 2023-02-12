@@ -1,0 +1,39 @@
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\WPFApp.exe.config
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\WPFApp.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\WPFApp.pdb
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.csprojAssemblyReference.cache
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\MainWindow.g.cs
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\App.g.cs
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp_MarkupCompile.cache
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp_MarkupCompile.lref
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\MainWindow.baml
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.g.resources
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.Properties.Resources.resources
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.csproj.GenerateResource.cache
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.pdb
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\TD2.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\TD2.pdb
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\TD2.exe.config
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\obj\Debug\WPFApp.csproj.CopyComplete
+C:\Users\Arthur\Documents\POO_A2\PSI\WPFApp\bin\Debug\TD2.xml
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\WPFApp.exe.config
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\WPFApp.exe
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\WPFApp.pdb
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\TD2.exe
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\TD2.pdb
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\TD2.xml
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\bin\Debug\TD2.exe.config
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.csproj.AssemblyReference.cache
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\MainWindow.g.cs
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\App.g.cs
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp_MarkupCompile.cache
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp_MarkupCompile.lref
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\MainWindow.baml
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.g.resources
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.Properties.Resources.resources
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.csproj.GenerateResource.cache
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.csproj.CoreCompileInputs.cache
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.csproj.CopyComplete
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.exe
+C:\Users\arthur\Desktop\PSI A2\PSI\WPFApp\obj\Debug\WPFApp.pdb

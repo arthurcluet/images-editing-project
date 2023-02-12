@@ -1,0 +1,15 @@
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\bin\Debug\TD2.exe.config
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\bin\Debug\TD2.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\bin\Debug\TD2.pdb
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\obj\Debug\TD2.csprojAssemblyReference.cache
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\obj\Debug\TD2.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\obj\Debug\TD2.pdb
+C:\Users\Arthur\Documents\POO_A2\PSI\TD2\bin\Debug\TD2.xml
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\bin\Debug\TD2.exe.config
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\bin\Debug\TD2.xml
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\bin\Debug\TD2.exe
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\bin\Debug\TD2.pdb
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\obj\Debug\TD2.csproj.AssemblyReference.cache
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\obj\Debug\TD2.csproj.CoreCompileInputs.cache
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\obj\Debug\TD2.exe
+C:\Users\arthur\Desktop\PSI A2\PSI\TD2\obj\Debug\TD2.pdb

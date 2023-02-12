@@ -1,0 +1,6 @@
+C:\Users\Arthur\Documents\POO_A2\PSI\TD1\bin\Debug\TD1.exe.config
+C:\Users\Arthur\Documents\POO_A2\PSI\TD1\bin\Debug\TD1.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\TD1\bin\Debug\TD1.pdb
+C:\Users\Arthur\Documents\POO_A2\PSI\TD1\obj\Debug\TD1.csprojAssemblyReference.cache
+C:\Users\Arthur\Documents\POO_A2\PSI\TD1\obj\Debug\TD1.exe
+C:\Users\Arthur\Documents\POO_A2\PSI\TD1\obj\Debug\TD1.pdb

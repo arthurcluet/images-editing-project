@@ -1,0 +1,86 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Numerics;
+
+namespace TD2
+{
+    class Fractale
+    {
+        private int[,] mat;
+        private int max;
+
+        public Fractale(int width, int height, double step, int max, int dX = 0, int dY = 0)
+        {
+            this.max = max;
+            this.mat = new int[height, width];
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    // Coordonnées X et Y dans le plan complexe
+                    double X = (j - dX) * 1.0 / 1000;
+                    double Y = (i - dY) * 1.0 / 1000;
+                    Complex C0 = new Complex(X, Y);
+                    Complex C = new Complex(X, Y);
+
+
+                    int k = 0;
+                    for (k = 0; k < max; k++)
+                    {
+                        C = C * C + C0;
+                        if (C.Magnitude > 2) break;
+                    }
+                    this.mat[i, j] = k;
+                }
+            }
+        }
+
+        public Fractale(int width, int height, double step, int max, Complex C0, int dX = 0, int dY = 0)
+        {
+            this.max = max;
+            this.mat = new int[height, width];
+            for(int i = 0; i < height; i++)
+            {
+                for(int j = 0; j < width; j++)
+                {
+                    // Coordonnées X et Y dans le plan complexe
+                    double X = (j - dX) * step;
+                    double Y = (i - dY) * step;
+
+                    //if (i < 100 && j < 100) Console.WriteLine(X + " " + Y);
+
+                    Complex C = new Complex(X, Y);
+
+
+                    int k = 0;
+                    for(k = 0; k < max; k++)
+                    {
+                        C = C * C + C0;
+                        if (C.Magnitude > 2) break;
+                    }
+                    this.mat[i, j] = k;
+                }
+            }
+        }
+
+
+        public int[,] Matrix
+        {
+            get { return this.mat; }
+        }
+
+        public int Max
+        {
+            get { return this.max; }
+        }
+
+        //Fractale F1 = new Fractale(2000, 2000, 0.001, 255, new Complex(0.1, 0.65), 1000, 1000);
+        //Fractale F1_lg = new Fractale(2000, 2000, 0.0001, 255, new Complex(0.1, 0.65), 2000, 400);
+        //Img image1 = new Img(F1);
+        //Img image1_lg = new Img(F1_lg);
+
+    }
+}

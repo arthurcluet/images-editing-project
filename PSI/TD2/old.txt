@@ -1,0 +1,162 @@
+// Valeurs codées sur 4 octets
+            /* for (int i = 0; i < 4; i++)
+            {
+                // File size
+                file[2 + i] = (byte)(fileSize % 256);
+                fileSize /= 256;
+                // Pixel Data Offset
+                file[10 + i] = (byte)(pixelDataOffset % 256);
+                pixelDataOffset /= 256;
+                // Header Size
+                file[14 + i] = (byte)(headerSize % 256);
+                headerSize /= 256;
+                // Image Width
+                file[18 + i] = (byte)(width % 256);
+                width /= 256;
+                // Image Height
+                file[22 + i] = (byte)(height % 256);
+                height /= 256;
+                // Image Size
+                file[34 + i] = (byte)(imageSize % 256);
+                imageSize /= 256;
+            } */
+
+            // Valeurs codées sur 2 octets
+            /*for(int i = 0; i < 2; i++)
+            {
+                // Planes
+                file[26 + i] = (byte)(planes % 256);
+                planes /= 256;
+                // Bits Per Pixel
+                file[28 + i] = (byte)(bitsPerPixel % 256);
+                bitsPerPixel /= 256;
+            }*/
+
+
+
+//!\\ METHODE ECRITE A PARTIR DU CODE MATLAB de @rayryeng sur StackOverflow.com
+        //!\\ Je ne suis pas l'auteur de cet algorithme
+        public static double[,] GaussianBlur(int n)
+        {
+            double sigma = 1;
+            double[,] kernel = new double[n, n];
+            double mean = n / 2;
+            double sum = 0.0;
+            for (int x = 0; x < n; ++x)
+            {
+                for(int y = 0; y < n; ++y)
+                {
+                    kernel[x, y] = Math.Exp(-0.5 * (Math.Pow((x - mean) / sigma, 2.0) + Math.Pow((y - mean) / sigma, 2.0))) / ( 2 * Math.PI * sigma * sigma);
+
+                    sum += kernel[x, y];
+                }
+            }
+
+            for (int x = 0; x < n; ++x)
+                for (int y = 0; y < n; ++y)
+                    kernel[x, y] /= sum;
+
+            return kernel;
+        }
+
+
+
+        //static void Fractale()
+        //{
+        //    int[,] fractale = new int[2001, 2001];
+
+        //    int n = 255;
+        //    for (int i = 0; i < fractale.GetLength(0); i++)
+        //    {
+        //        for (int j = 0; j < fractale.GetLength(1); j++)
+        //        {
+
+        //            double X = (j - fractale.GetLength(1) / 2) * 1.0 / 1000;
+        //            double Y = (i - fractale.GetLength(0) / 2) * 1.0 / 1000;
+
+        //            //Console.WriteLine(X + " " + Y);
+        //            Complex C0 = new Complex(0.1, 0.65);
+        //            Complex C = new Complex(X, Y);
+
+        //            int k = 0;
+        //            while (k < n && C.Magnitude < 2)
+        //            {
+        //                C = C * C + C0;
+        //                k++;
+        //            }
+                    
+        //            fractale[i, j] = 255 - k;
+
+        //        }
+
+        //    }
+        //    Img image = new Img(fractale);
+        //    image.Save("./src/fractale3.bmp");
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ancienne fonction de rotation
+        private void RotateOLD(int deg)
+        {
+            deg = -deg; // SENS HORAIRE (j'avais initialement fait l'autre)
+            while (deg < 0) deg += 360;
+            while (deg >= 360) deg -= 360;
+
+            // On effectue des rotations de 90° jusqu'à obtenir un angle dans l'intervalle [0, pi/2]
+            int rotationInitiale = deg / 90;
+            this.Rotate90(-rotationInitiale * 90);
+
+            // La rotation restante est effectuée ici
+            int rotation = deg % 90;
+
+            double rad = (double)rotation * Math.PI / 180.0;
+
+            int height = (int)(Math.Sin(rad) * (double)this.pixels.GetLength(1) + Math.Cos(rad) * (double)this.pixels.GetLength(0)) ;
+            int width = (int)(Math.Cos(rad) * (double)this.pixels.GetLength(1) + Math.Sin(rad) * (double)this.pixels.GetLength(0));
+
+            Pixel[,] rot = new Pixel[height, width];
+
+
+            for(int i = 0; i < height; i++)
+            {
+                for(int j = 0; j < width; j++)
+                {
+
+                    double X = (double)j - (double)(this.pixels.GetLength(0)) * Math.Sin(rad);
+                    double Y = (double)(height - i);
+
+                    double r = Math.Sqrt(X * X + Y * Y);
+                    double ang = ((X != 0) ? Math.Atan(Y / X) + ( (X < 0) ? Math.PI : 0.0 ) : Math.PI / 2.0) - rad;
+                    //Console.WriteLine(ang);
+
+                    double x = r * Math.Cos(ang);
+                    double y = r * Math.Sin(ang);
+
+                    int I = (int)(this.pixels.GetLength(0) - y);
+                    int J = (int)x;
+
+                    if (I >= 0 && J >= 0 && I < this.pixels.GetLength(0) && J < this.pixels.GetLength(1))
+                    {
+                        rot[i, j] = this.pixels[I, J];
+                    } else
+                    {
+                        rot[i, j] = new Pixel(255, 255, 255);
+                    }
+                    
+                }
+            }
+
+            pixels = rot;
+        }

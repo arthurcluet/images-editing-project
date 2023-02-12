@@ -1,0 +1,650 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TD2</name>
+    </assembly>
+    <members>
+        <member name="T:TD2.Filtres">
+            <summary>
+            Classe comportant uniquement des champs statiques contenant différents noyaux pour effectuer une convolution.
+            </summary>
+        </member>
+        <member name="T:TD2.Fractale">
+            <summary>
+            Classe regroupant les méthodes permettant de générer une fractale de Julia
+            </summary>
+        </member>
+        <member name="M:TD2.Fractale.From(System.Numerics.Complex,System.Int32,System.Int32,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Génère une fractale de Julia sous forme de matrice d'entiers.
+            Chaque entier représente le nombre d'itérations qu'il a fallu pour que la suite diverge.
+            Le centre de la matrice obtenue représente les coordonnées (0,0) du plan complexe.
+            Les valeurs height et width sont les dimensions de la matrice que l'on veut obtenir.
+            Les valeurs rangeY et rangeX sont la hauteur et largeur de la matrice quand on la place dans le plan complexe (si on veut une fractale entre les coordonnées -1 et 1 pour chaque axe, on met rangeY et rangeX à la valeur 2).
+            --> Pour les "range" nous essaierons de mettre un schéma explicatif sur le rapport.
+            
+            Lorsque des images très grandes sont générées, les calculs sont précis et très longs et nous avions d'abord décidé d'afficher un % de progression dans la console.
+            Comme l'idée était bien mais assez peu esthétique (100 fois Console.WriteLine()...) nous l'avons améliorer pour faire apparaître une barre de progression jolie.
+            Le fonctionnement est assez simple il consiste à mettre à jour de nombreuses fois une ligne de la console en revenant au début avec "\r".
+            </summary>
+            <param name="c">Paramètre C de l'ensemble de Julia</param>
+            <param name="height">Hauteur de la matrice obtenue</param>
+            <param name="width">Largeur de la matrice obtenue</param>
+            <param name="rangeY">Hauteur de la matrice dans le plan complexe</param>
+            <param name="rangeX">Largeur de la matrice dans le plan complexe</param>
+            <param name="progressBar">Affiche ou non une barre de progression</param>
+            <returns>Matrice d'entiers représentant une fractale de Julia</returns>
+        </member>
+        <member name="T:TD2.Img">
+            <summary>
+            Type permettant d'effectuer des manipulations sur une image et l'exporter au format Bitmap
+            </summary>
+        </member>
+        <member name="M:TD2.Img.#ctor(System.String)">
+            <summary>
+            Crée une instance de Img à partir du chemin d'un fichier .bmp
+            Ce constructeur lit les informations dans le header et les place dans les champs de Img prévus à cet effet.
+            (Ils sont bien lus et placés dans des variables -- bien que toujours les mêmes pour chaque image)
+            </summary>
+            <param name="filename">Chemin du fichier .BMP</param>
+        </member>
+        <member name="M:TD2.Img.#ctor(System.Int32[0:,0:],System.Boolean)">
+            <summary>
+            Ce constructeur crée une instance de Img à partir d'une matrice d'entiers.
+            Les données nécessaires pour créer l'en-tête du Bitmap sont spécifiées au début de la méthode.
+            Pour chaque entier, le constructeur associe une certaine couleur (calculée avec une formule inventée).
+            Dans le cas où la matrice contient des 0 et 1 (pour les codes QR notamment), il convient de le spécifier grâce au second paramètre et l'image sera remplie de cases noires et blanches.
+            </summary>
+            <param name="matrix">Matrice dont chaque entier représente un pixel</param>
+            <param name="nb">Booléen pour spécifier si l'on veut uniquement du noir et blanc</param>
+        </member>
+        <member name="P:TD2.Img.Height">
+            <summary>
+            Alias pour obtenir la hauteur de l'image
+            </summary>
+        </member>
+        <member name="P:TD2.Img.Width">
+            <summary>
+            Alias pour obtenir la largeur de l'image
+            </summary>
+        </member>
+        <member name="M:TD2.Img.toBitmap">
+            <summary>
+            Crée un objet de type Bitmap à partir d'une instance de Img.
+            Une instance de Bitmap est créée avec les dimensions de l'image, puis chaque les pixels sont spécifiés un par un avec SetPixel().
+            NB: La fonction n'est pas utilsée dans le projet (elle a été créé en pensant que nous ferions une version WPF du projet)
+            </summary>
+            <returns>Copie de l'image au format Bitmap</returns>
+        </member>
+        <member name="M:TD2.Img.ToString">
+            <summary>
+            Crée une chaîne de caractères qui représente l'image dans le but de l'afficher dans la Console
+            Chaque pixel est remplacé par un certain caractère en fonction de s'il est foncé ou clair.
+            </summary>
+            <returns>Chaîne de caractères qui représente l'image</returns>
+        </member>
+        <member name="M:TD2.Img.NuancesDeGris">
+            <summary>
+            Applique un filtre Nuance de gris.
+            La moyenne des valeurs R,G,B est calculée pour chaque pixel puis chacune des valeurs est remplacée par cette moyenne.
+            </summary>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.NoirBlanc">
+            <summary>
+            Mets l'image en noir et blanc.
+            Chaque pixel est remplacé par du noir (0,0,0) ou blanc (255,255,255) s'il est clair ou foncé.
+            </summary>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.FlipX">
+            <summary>
+            Applique un effet miroir horizontal à l'image
+            </summary>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.FlipY">
+            <summary>
+            Applique un effet miroir vertical à l'image
+            </summary>
+            <returns>Image modifée</returns>
+        </member>
+        <member name="M:TD2.Img.Rotate90(System.Int32)">
+            <summary>
+            Rotation de l'image dans le sens horaires (multiples de 90° uniquement)
+            Fonction utilisée par la suite pour la rotation plus "précise".
+            </summary>
+            <param name="deg">Angle de rotation multiple de 90</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.Argument(System.Double,System.Double)">
+            <summary>
+            Calcule l'argument du complexe Z = X + iY passé en paramètre.
+            Cette fonction n'est plus utilisée car similaire à Math.Atan2();
+            </summary>
+            <param name="X">Partie réelle</param>
+            <param name="Y">Partie imaginaire</param>
+            <returns>Argument de X+iY</returns>
+        </member>
+        <member name="M:TD2.Img.Rotate(System.Int32)">
+            <summary>
+            Cette fonction effectue une rotation de l'image pour un angle entier fourni en paramètre.
+            L'image tourne d'abord plusieurs fois de 90° grâce à une autre méthode puis une rotation entre 0 et 90° supplémentaire est faite ici.
+            Les dimensions de la nouvelle image sont calculées puis pour chaque pixel de cette nouvelle image, la fonction retrouve les coordonnées du pixel correspondant dans l'image d'origine.
+            En partant des coordonnées dans la nouvelle image et pas l'image d'origine, on évite qu'il y ai des pixels blancs auxquels aucune couleur n'est attribuée.
+            Angle négatif accepté pour effectuer la rotation dans le sens anti-horaire.
+            </summary>
+            <param name="deg">Angle de rotation (négatif pour anti-horaire)</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.Crop(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Permet de rogner une image.
+            Les coordonnées X et Y sont les coordonnées, dans l'image d'origine, du coin supérieur gauche de l'image rognée.
+            </summary>
+            <param name="x">Coordonnée horizontale du coin supérieur gauche de l'image rognée</param>
+            <param name="y">Coordonnée verticale du coin supérieur gauche de l'image rognée</param>
+            <param name="width">Largeur de l'image rognée</param>
+            <param name="height">Hauteur de l'image rognée</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.Agrandir(System.Double)">
+            <summary>
+            Agrandit ou réduit la taille de l'image en fonction du facteur passé en paramètre.
+            Un nombre inférieur à 1 permet de réduire l'image.
+            Ex : 0.5 pour réduire l'image de moitié || 2.0 pour doubler la taille
+            </summary>
+            <param name="facteur">Facteur d'agrandissement</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.SetPixel(System.Int32,System.Int32,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Permet de modifier les coordonnées R,V,B pour un pixel de coordonnées (X,Y).
+            </summary>
+            <param name="x">Coordonnée horizontale du pixel</param>
+            <param name="y">Coordonnée verticale du pixel</param>
+            <param name="r">Rouge</param>
+            <param name="g">Vert</param>
+            <param name="b">Bleu</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.SetPixel(System.Int32,System.Int32,TD2.Pixel)">
+            <summary>
+            Permet de modifier le pixel de coordonnées (X,Y) en le remplaçant par un pixel placé en paramètre.
+            </summary>
+            <param name="x">Coordonnée horizontale du pixel</param>
+            <param name="y">Coordonnée verticale du pixel</param>
+            <param name="P">Nouveau pixel</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.Convolution(System.Double[0:,0:])">
+            <summary>
+            Effectue une convolution entre l'image et le noyau passé en paramètre.
+            La convolution est effectuée pour chaque couleur.
+            Les bords sont traités par EXTENSION et pas par enroullage.
+            Pour plus d'informations :
+            https://fr.wikipedia.org/wiki/Noyau_(traitement_d%27image)#Traitement_des_bords
+            </summary>
+            <param name="filtre">Noyau</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.PixelWeight(TD2.Pixel)">
+            <summary>
+            Renvoie la moyenne des valeurs R,G,B d'un pixel.
+            Méthode utilisée lors de la lecture de codes QR à partir d'un fichier Bitmap.
+            </summary>
+            <param name="P">Pixel</param>
+            <returns>Moyenne des valeurs R,G,B</returns>
+        </member>
+        <member name="M:TD2.Img.Hide(TD2.Img)">
+            <summary>
+            Cache l'image passée en paramètre dans l'image à partir de laquelle cette méthode est appelée.
+            L'image cachée doit être de dimensions inférieures à l'autre.
+            </summary>
+            <param name="image2">Image à cacher</param>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.Expose">
+            <summary>
+            Fais apparaître une image qui serait cachée dans une autre.
+            </summary>
+            <returns>Image modifiée</returns>
+        </member>
+        <member name="M:TD2.Img.ToQRCode">
+            <summary>
+            A partir d'un fichier Bitmap contenant un QRCode, crée une matrice de 0 et de 1 contenant les informations du QRCode.
+            Le QRCode peut être légèrement déformé mais rester lisible.
+            La méthode cherche le premier pixel noir/foncé dans les coins supérieurs gauche et droit, et inférieur droit. C'est pourquoi seul le code QR doit être présent sur l'image. Il doit également apparaître en intégralité même s'il est déformé.
+            Une déformation qui changerait la forme du QRCode en un rectangle de ratio différent de 1:1 est acceptée (exemples dans le rapport).
+            Renvoie NULL en cas de problème de lecture.
+            </summary>
+            <returns>Matrice de 0 et 1 contenant les données du QR Code</returns>
+        </member>
+        <member name="M:TD2.Img.Histogramme">
+            <summary>
+            Crée un histogramme avec la répartition des couleurs
+            Une image très sombre aura les plus hautes valeurs sur la gauche pour les 3 parties de l'histogramme.
+            </summary>
+            <returns>Nouvelle instance de Img contenant l'histogramme</returns>
+        </member>
+        <member name="M:TD2.Img.Save(System.String,System.Boolean)">
+            <summary>
+            Création d'un fichier .BMP à partir de la matrice de pixels et des données d'en-têtes situées dans les champs de la classe Img.
+            </summary>
+            <param name="filename">Chemin où sauvegarder le fichier</param>
+            <param name="start">Booléen pour spécifier s'il faut ouvrir le fichier avec Process.Start()</param>
+            <returns>Instance de la classe Img pour l'image sauvegardée</returns>
+        </member>
+        <member name="T:TD2.Pixel">
+            <summary>
+            Type représentant un pixel grâce à trois champs Rouge, Vert et Bleu
+            </summary>
+        </member>
+        <member name="M:TD2.Pixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Crée un pixel à partir de trois valeurs R,V,B
+            </summary>
+            <param name="b">Bleu</param>
+            <param name="g">Vert</param>
+            <param name="r">Rouge</param>
+        </member>
+        <member name="P:TD2.Pixel.B">
+            <summary>
+            Propriété BLEU accessible en lecture et écriture
+            </summary>
+        </member>
+        <member name="P:TD2.Pixel.G">
+            <summary>
+            Propriété VERT accessible en lecture et écriture
+            </summary>
+        </member>
+        <member name="P:TD2.Pixel.R">
+            <summary>
+            Propriété ROUGE accessible en lecture et écriture
+            </summary>
+        </member>
+        <member name="M:TD2.Pixel.SetPixel(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Permet de modifier les valeurs R,V,B d'une instance de Pixel
+            </summary>
+            <param name="b">Bleu</param>
+            <param name="g">Vert</param>
+            <param name="r">Rouge</param>
+        </member>
+        <member name="M:TD2.Pixel.toString">
+            <summary>
+            Pour afficher un pixel dans la console, retourne un caractère différent si le pixel est clair ou foncé
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TD2.Program.Path(System.String)">
+            <summary>
+            Remplace les "/" d'un chemin par "\\"
+            J'obtenais une erreur lors de l'utilisation de Process.Start(path) en utilisant des "/"
+            </summary>
+            <param name="path">Chemin</param>
+            <returns>Chemin utilisable dans Process.Start()</returns>
+        </member>
+        <member name="T:TD2.QRGenerator">
+            <summary>
+            Classe permettant de générer des QR Codes.
+            Nécessite d'être instanciée car des données nécessaires à la fabrication du code QR sont stockées dans un fichier
+            </summary>
+        </member>
+        <member name="P:TD2.QRGenerator.Versions">
+            <summary>
+            Permet d'obtenir les informations de versions à partir d'une instance de QRGenerator
+            </summary>
+        </member>
+        <member name="M:TD2.QRGenerator.#ctor">
+            <summary>
+            Constructeur de QRGenerator
+            La classe doit être instanciée pour pouvoir lire et créer des codes QR.
+            En effet, un fichier est lu dans le constructeur et les informations contenues dedans sont nécessaires au fonctionnement des méthodes.
+            </summary>
+        </member>
+        <member name="M:TD2.QRGenerator.GenerateRandom(System.Int32)">
+            <summary>
+            Permet de générer un QRCode contenant une chaîne de caractères aléatoire
+            </summary>
+            <param name="length">Longueur de la chaîne attendue / Longueur aléatoire si non spécifié</param>
+            <returns>Chaîne générée aléatoirement</returns>
+        </member>
+        <member name="M:TD2.QRGenerator.DataEncode(System.String,System.Int32,System.Int32)">
+            <summary>
+            Encode une chaîne de caractères en vue de générer un code QR.
+            Le nombres de bytes attendu est à préciser en paramètres avec la version de code QR.
+            Le nombre de bits sur lequel indiquer la longueur de la chaîne varie en fonction de la version et elle doit donc être spécifiée.
+            </summary>
+            <param name="saisie">Chaîne à encoder</param>
+            <param name="codewords_number">Nombre de bytes attendu</param>
+            <param name="version">Version de code QR</param>
+            <returns>Suite d'octets contenant les données encodées</returns>
+        </member>
+        <member name="M:TD2.QRGenerator.Generate(System.String)">
+            <summary>
+            A partir d'une chaîne de caractères, génère un code QR sous forme de matrice de 0 et de 1.
+            Les 0 représentent les pixels blancs et les 1 représentent les pixels noirs.
+            La matrice retournée peut-être passée à un constructeur de Img pour générer une image Bitmap.
+            
+            Lire les commentaires au sein de la méthode pour en savoir plus sur le fonctionnement.
+            </summary>
+            <param name="input">Chaîne à encoder dans le code QR</param>
+            <returns>Code QR</returns>
+        </member>
+        <member name="M:TD2.QRGenerator.DisplayQR(System.Int32[0:,0:])">
+            <summary>
+            Affiche un code QR dans la Console en modifiant la couleur de fond et en affichant des espaces
+            </summary>
+            <param name="matrix">Code QR à afficher</param>
+        </member>
+        <member name="M:TD2.QRGenerator.Read(System.String)">
+            <summary>
+            Lit un code QR à partir d'un fichier dont le chemin est passé en paramètre
+            </summary>
+            <param name="filename">Chemin du fichier</param>
+            <returns>Contenu du code QR</returns>
+        </member>
+        <member name="M:TD2.QRGenerator.Read(System.Int32[0:,0:])">
+            <summary>
+            Lit le contenu du code QR passé en paramètre (sous forme de matrice de 0 et 1)
+            On procède en faisant l'inverse de la méthode de création de code QR
+            On supprime les informations dans les zones réservées
+            Lorsque tout est supprimé, on lit les données en partant du début.
+            
+            Les données sont réorganisées dans le bon ordre avec le même système de groupes que pour la création de code QR.
+            
+             Nous n'utilisons (malheureusement) pas la correction présente dans le code QR pour corriger d'éventuelles erreurs de lecture (par la classe Img qui convertir le Bmp en matrice)
+            </summary>
+            <param name="code0">Matrice représentant un code QR</param>
+            <returns>Contenu du code QR</returns>
+        </member>
+        <member name="T:TD2.QRVersion">
+            <summary>
+            Type permettant de stocker les informations à propos d'une version de Code QR
+            </summary>
+        </member>
+        <member name="M:TD2.QRVersion.#ctor(System.Int32,System.String)">
+            <summary>
+            Constructeur de QR Version
+            Remplit les informations à partir d'une chaîne de caractère (une ligne du fichier ./versions_info/table.txt)
+            </summary>
+            <param name="v">Version du code QR</param>
+            <param name="input">Chaîne décrivant la version</param>
+        </member>
+        <member name="M:TD2.QRVersion.toString">
+            <summary>
+            Permet d'obtenir des informations sur la version sous forme de chaîne de caractères
+            Méthode utilisée à des fins de tests
+            </summary>
+            <returns>Chaîne décrivant la version</returns>
+        </member>
+        <member name="P:TD2.QRVersion.Version">
+            <summary>
+            N° de version
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.Capacity">
+            <summary>
+            Capacité (en mode alphanumérique) de cette version
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.Data_Length">
+            <summary>
+            Nombre de mots de données requis pour cette version
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.EC_Length">
+            <summary>
+            Nombre de mots de corrections par bloc
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.Group1_Length">
+            <summary>
+            Nombre de blocs du groupe 1
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.Group1_BlockLength">
+            <summary>
+            Nombre de mots dans un bloc du groupe 1
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.Group2_Length">
+            <summary>
+            Nombre de blocs du groupe 2
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.Group2_BlockLength">
+            <summary>
+            Nombre de mots dans un bloc du groupe 2
+            </summary>
+        </member>
+        <member name="P:TD2.QRVersion.PatternPositions">
+            <summary>
+            Coordonnées permettant d'obtenir la position des Alignment Patterns
+            </summary>
+        </member>
+        <member name="T:TD2.Utils">
+            <summary>
+            Classe regroupant des méthodes assez génériques
+            </summary>
+        </member>
+        <member name="M:TD2.Utils.Multiply(System.Double[0:,0:],System.Double)">
+            <summary>
+            Crée une copie d'une matrice de double en multipliant chaque valeur par une valeur spécifiée en paramètre
+            </summary>
+            <param name="mat">Matrice à copier</param>
+            <param name="a">Facteur</param>
+            <returns>Copie modifiée</returns>
+        </member>
+        <member name="M:TD2.Utils.toString(System.Byte[],System.String)">
+            <summary>
+            Renvoie un tableau de byte sous forme de chaîne de caractères pour l'afficher dans la console
+            </summary>
+            <param name="tab">Tableau à convertir</param>
+            <param name="separator">Caractères à mettre à chaque byte</param>
+            <returns>Le tableau sous forme de chaîne de caractères</returns>
+        </member>
+        <member name="T:ReedSolomon.GenericGF">
+            <summary>
+              <p>This class contains utility methods for performing mathematical operations over
+            the Galois Fields. Operations use a given primitive polynomial in calculations.</p>
+              <p>Throughout this package, elements of the GF are represented as an {@code int}
+            for convenience and speed (but at the cost of memory).
+              </p>
+            </summary>
+            <author>Sean Owen</author>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a representation of GF(size) using the given primitive polynomial.
+            </summary>
+            <param name="primitive">irreducible polynomial whose coefficients are represented by
+            *  the bits of an int, where the least-significant bit represents the constant
+            *  coefficient</param>
+            <param name="size">the size of the field</param>
+            <param name="genBase">the factor b in the generator polynomial can be 0- or 1-based
+            *  (g(x) = (x+a^b)(x+a^(b+1))...(x+a^(b+2t-1))).
+            *  In most cases it should be 1, but for QR code it is 0.</param>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.BuildMonomial(System.Int32,System.Int32)">
+            <summary>
+            Builds the monomial.
+            </summary>
+            <param name="degree">The degree.</param>
+            <param name="coefficient">The coefficient.</param>
+            <returns>the monomial representing coefficient * x^degree</returns>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.AddOrSubtract(System.Int32,System.Int32)">
+            <summary>
+            Implements both addition and subtraction -- they are the same in GF(size).
+            </summary>
+            <returns>sum/difference of a and b</returns>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.Exp(System.Int32)">
+            <summary>
+            Exps the specified a.
+            </summary>
+            <returns>2 to the power of a in GF(size)</returns>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.Log(System.Int32)">
+            <summary>
+            Logs the specified a.
+            </summary>
+            <param name="a">A.</param>
+            <returns>base 2 log of a in GF(size)</returns>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.Inverse(System.Int32)">
+            <summary>
+            Inverses the specified a.
+            </summary>
+            <returns>multiplicative inverse of a</returns>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.Multiply(System.Int32,System.Int32)">
+            <summary>
+            Multiplies the specified a with b.
+            </summary>
+            <param name="a">A.</param>
+            <param name="b">The b.</param>
+            <returns>product of a and b in GF(size)</returns>
+        </member>
+        <member name="P:ReedSolomon.GenericGF.Size">
+            <summary>
+            Gets the size.
+            </summary>
+        </member>
+        <member name="P:ReedSolomon.GenericGF.GeneratorBase">
+            <summary>
+            Gets the generator base.
+            </summary>
+        </member>
+        <member name="M:ReedSolomon.GenericGF.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:ReedSolomon.GenericGFPoly">
+            <summary>
+            <p>Represents a polynomial whose coefficients are elements of a GF.
+            Instances of this class are immutable.</p>
+            <p>Much credit is due to William Rucklidge since portions of this code are an indirect
+            port of his C++ Reed-Solomon implementation.</p>
+            </summary>
+            <author>Sean Owen</author>
+        </member>
+        <member name="M:ReedSolomon.GenericGFPoly.#ctor(ReedSolomon.GenericGF,System.Int32[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ReedSolomon.GenericGFPoly"/> class.
+            </summary>
+            <param name="field">the {@link GenericGF} instance representing the field to use
+            to perform computations</param>
+            <param name="coefficients">coefficients as ints representing elements of GF(size), arranged
+            from most significant (highest-power term) coefficient to least significant</param>
+            <exception cref="T:System.ArgumentException">if argument is null or empty,
+            or if leading coefficient is 0 and this is not a
+            constant polynomial (that is, it is not the monomial "0")</exception>
+        </member>
+        <member name="P:ReedSolomon.GenericGFPoly.Degree">
+            <summary>
+            degree of this polynomial
+            </summary>
+        </member>
+        <member name="P:ReedSolomon.GenericGFPoly.IsZero">
+            <summary>
+            Gets a value indicating whether this <see cref="T:ReedSolomon.GenericGFPoly"/> is zero.
+            </summary>
+            <value>true iff this polynomial is the monomial "0"</value>
+        </member>
+        <member name="M:ReedSolomon.GenericGFPoly.GetCoefficient(System.Int32)">
+            <summary>
+            coefficient of x^degree term in this polynomial
+            </summary>
+            <param name="degree">The degree.</param>
+            <returns>coefficient of x^degree term in this polynomial</returns>
+        </member>
+        <member name="M:ReedSolomon.GenericGFPoly.EvaluateAt(System.Int32)">
+            <summary>
+            evaluation of this polynomial at a given point
+            </summary>
+            <param name="a">A.</param>
+            <returns>evaluation of this polynomial at a given point</returns>
+        </member>
+        <member name="M:ReedSolomon.ReedSolomonAlgorithm.Encode(System.Byte[],System.Int32,ReedSolomon.ErrorCorrectionCodeType)">
+            <summary>
+            Produces error correction codewords for a message using the Reed-Solomon algorithm.
+            </summary>
+            <param name="message">The message to compute the error correction codewords.</param>
+            <param name="eccCount">The number of error correction codewords desired.</param>
+            <param name="eccType">The type of Galois field to use to encode error correction codewords.</param>
+            <returns>Returns the computed error correction codewords.</returns>
+        </member>
+        <member name="M:ReedSolomon.ReedSolomonAlgorithm.Encode(System.Byte[],System.Int32)">
+            <summary>
+            Produces error correction codewords for a message using the Reed-Solomon algorithm.
+            </summary>
+            <param name="message">The message to compute the error correction codewords.</param>
+            <param name="eccCount">The number of error correction codewords desired.</param>
+            <returns>Returns the computed error correction codewords.</returns>
+        </member>
+        <member name="M:ReedSolomon.ReedSolomonAlgorithm.Decode(System.Byte[],System.Byte[],ReedSolomon.ErrorCorrectionCodeType)">
+            <summary>
+            Repairs a possibly broken message using the Reed-Solomon algorithm.
+            </summary>
+            <param name="message">The possibly broken message to repair.</param>
+            <param name="ecc">The available error correction codewords.</param>
+            <param name="eccType">The type of Galois field to use to decode message.</param>
+            <returns>Returns the repaired message, or null if it cannot be repaired.</returns>
+        </member>
+        <member name="M:ReedSolomon.ReedSolomonAlgorithm.Decode(System.Byte[],System.Byte[])">
+            <summary>
+            Repairs a possibly broken message using the Reed-Solomon algorithm.
+            </summary>
+            <param name="message">The possibly broken message to repair.</param>
+            <param name="ecc">The available error correction codewords.</param>
+            <returns>Returns the repaired message, or null if it cannot be repaired.</returns>
+        </member>
+        <member name="T:ReedSolomon.ReedSolomonDecoder">
+            <summary> <p>Implements Reed-Solomon decoding, as the name implies.</p>
+            
+            <p>The algorithm will not be explained here, but the following references were helpful
+            in creating this implementation:</p>
+            
+            <ul>
+            <li>Bruce Maggs.
+            <a href="http://www.cs.cmu.edu/afs/cs.cmu.edu/project/pscico-guyb/realworld/www/rs_decode.ps">
+            "Decoding Reed-Solomon Codes"</a> (see discussion of Forney's Formula)</li>
+            <li>J.I. Hall. <a href="www.mth.msu.edu/~jhall/classes/codenotes/GRS.pdf">
+            "Chapter 5. Generalized Reed-Solomon Codes"</a>
+            (see discussion of Euclidean algorithm)</li>
+            </ul>
+            
+            <p>Much credit is due to William Rucklidge since portions of this code are an indirect
+            port of his C++ Reed-Solomon implementation.</p>
+            
+            </summary>
+            <author>Sean Owen</author>
+            <author>William Rucklidge</author>
+            <author>sanfordsquires</author>
+        </member>
+        <member name="M:ReedSolomon.ReedSolomonDecoder.Decode(System.Int32[],System.Int32)">
+            <summary>
+              <p>Decodes given set of received codewords, which include both data and error-correction
+            codewords. Really, this means it uses Reed-Solomon to detect and correct errors, in-place,
+            in the input.</p>
+            </summary>
+            <param name="received">data and error-correction codewords</param>
+            <param name="twoS">number of error-correction codewords available</param>
+            <returns>false: decoding fails</returns>
+        </member>
+        <member name="T:ReedSolomon.ReedSolomonEncoder">
+            <summary>
+            Implements Reed-Solomon encoding, as the name implies.
+            </summary>
+            <author>Sean Owen</author>
+            <author>William Rucklidge</author>
+        </member>
+    </members>
+</doc>
